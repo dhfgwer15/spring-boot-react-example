@@ -1,0 +1,52 @@
+
+CREATE TABLE `board` (
+  `board_id` bigint NOT NULL,
+  `title` varchar(100) NOT NULL COMMENT '제목',
+  `content` varchar(1000) DEFAULT NULL COMMENT '내용',
+  `viewCount` int DEFAULT '0' COMMENT '조회수',
+  `modified_date` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '수정일(yy-MM-dd)',
+  `member_id` bigint DEFAULT NULL,
+  `create_date` varchar(255) DEFAULT NULL,
+  `view_count` int DEFAULT NULL,
+  PRIMARY KEY (`board_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `member` (
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(100) NOT NULL COMMENT '가입 이메일',
+  `username` varchar(100) NOT NULL COMMENT '유저명',
+  `password` varchar(1000) NOT NULL COMMENT '비밀번호(암호화)',
+  `role` varchar(10) DEFAULT NULL COMMENT '유저 권한(user / admin)',
+  `created_date` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '생성일(yy-MM-dd)',
+  `modified_date` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '수정일(yy-MM-dd)',
+  `member_id` bigint NOT NULL,
+  `create_date` varchar(255) DEFAULT NULL,
+  `roles` enum('ADMIN','USER') DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `comment` (
+  `comment_id` bigint NOT NULL,
+  `content` varchar(100) NOT NULL COMMENT '댓글',
+  `modified_date` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '수정일(yy-MM-dd)',
+  `board_id` bigint DEFAULT NULL,
+  `create_date` varchar(255) DEFAULT NULL,
+  `member_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`comment_id`),
+  KEY `FKlij9oor1nav89jeat35s6kbp1` (`board_id`),
+  CONSTRAINT `FKlij9oor1nav89jeat35s6kbp1` FOREIGN KEY (`board_id`) REFERENCES `board` (`board_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `file` (
+  `file_id` bigint NOT NULL,
+  `file_path` varchar(1000) NOT NULL COMMENT '파일 경로(저장된 파일 경로)',
+  `created_date` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '생성일(yy-MM-dd)',
+  `modified_date` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '수정일(yy-MM-dd)',
+  `board_id` bigint DEFAULT NULL,
+  `create_date` varchar(255) DEFAULT NULL,
+  `file_type` varchar(255) DEFAULT NULL,
+  `origin_file_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `FKhxmhyint41lp428u8yxcy4alx` (`board_id`),
+  CONSTRAINT `FKhxmhyint41lp428u8yxcy4alx` FOREIGN KEY (`board_id`) REFERENCES `board` (`board_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
